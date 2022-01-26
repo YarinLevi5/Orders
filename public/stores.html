@@ -5,41 +5,109 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stores page</title>
+    <title>Stores</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/stores.css">
 </head>
 
 <body>
-    <input type="text" placeholder="Client ID" data-role="client">
-    <input type="text" placeholder="Store ID" data-role="store">
-    <input type="button" value="Send" data-role="btn">
+    <div class="wrap">
+        <div class="store-fileds">
+            <h1>Add store</h1>
+            <input type="text" placeholder="Name" data-role="name">
+            <input type="text" placeholder="Adress" data-role="adress">
+            <input type="text" placeholder="phone" data-role="phone">
+            <input type="button" value="Insert" data-role="insert-btn" class="insert-btn">
+            <div class="msg">Data was inserted sucssesfully</div>
+        </div>
+        <div class="searchName">
+            <label>Search by Name</label>
+            <input type="text" class="search" data-role="name-paramter">
+            <input type="button" value="Search" data-role="search-name-btn" class="search-btn">
+            <!-- when the server is exit when we have error -->
+        </div>
+        <div class="searchId">
+            <label>Search by Id</label>
+            <input type="text" class="search" data-role="id-paramter">
+            <input type="button" value="Search" data-role="search-id-btn" class="search-btn">
+            <input type="button" value="Update" data-role="update-id-btn" class="update-btn">
+        </div>
+        <div class="searchAll">
+            <label>Get all stores</label>
+            <input type="button" value="Search" data-role="search-all-btn" class="search-all-btn">
+        </div>
+        <div class="allDetails"></div>
+    </div>
+
     <script>
-        let id = '61efc3ff11cba7f33ae62071';
-        fetch('http://localhost:3000/find-store-id/' + id).then(data => console.log(data)).catch(err =>
-            console
-            .log(
-                err))
-
-        let name = 'zara'
-        fetch('/find-store-name/' + name).then(data => console.log(data)).catch(err =>
-            console
-            .log(
-                err))
-
         $(function () {
-            $('[data-role="btn"]').click(function () {
-                let clientId = $('[data-role="client"]').val();
-                let storeId = $('[data-role="store"]').val();
-                let data = {
-                    clientId,
-                    storeId
+            $('[data-role="insert-btn"]').click(() => {
+                let obj = {
+                    name: $('[data-role="name"]').val(),
+                    adress: $('[data-role="adress"]').val(),
+                    phone: $('[data-role="phone"]').val()
                 }
-                fetch('http://localhost:3000/insert-store', {
+                fetch('http://localhost:4000/insert-store', {
                     method: 'POST',
-                    body: JSON.stringify(data)
-                }).then(data => console.log(data)).catch(e => console.log(e))
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(obj),
+                }).then(data => {
+                    $('.msg').toggleClass('show')
+                    resetFileds()
+                }).catch(err => console.log(
+                    err))
             })
+
+            $('[data-role="search-all-btn"]').click(function () {
+                $.get('http://localhost:4000/find-store', (data) => {
+                    displayData(data);
+                })
+            })
+
+            $('[data-role="search-name-btn"]').click(() => {
+                let name = $('[data-role="name-paramter"]').val();
+                fetch('/find-store-name/' + name)
+                    .then(res => res.json()).
+                then(data => displayData(
+                        data))
+                    .catch(err =>
+                        $('.resulte').toggleClass('show'))
+                resetFileds();
+            })
+
+
+            $('[data-role="search-id-btn"]').click(() => {
+                let id = $('[data-role="id-paramter"]').val();
+                fetch('http://localhost:4000/find-store-id/' + id)
+                    .then(res => res.json())
+                    .then(data => displayData(data))
+                    .catch(err =>
+                        console.log(err))
+                resetFileds();
+            })
+
+            function resetFileds() {
+                $('[data-role="name-paramter"]').val(''),
+                    $('[data-role="id-paramter"]').val(''),
+                    $('[data-role="name"]').val(''),
+                    $('[data-role="adress"]').val(''),
+                    $('[data-role="phone"]').val('')
+            }
+
+            function displayData(data) {
+                $('.allDetails').html('');
+                $.each(data, (i, value) => {
+                    $('.allDetails').append(`<div style='border-bottom:1px solid black'>
+                          <p>${`Id:${value._id}`}</p>
+                          <p>${`Name:${value.name}`}</p>
+                          <p>${`Adress:${value.adress}`}</p>
+                          <p>${`Phone:${value.phone}`}</p>
+                      </div>`)
+                })
+            }
         })
     </script>
 </body>

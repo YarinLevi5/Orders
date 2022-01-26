@@ -26,10 +26,10 @@ Add an orders.html file that will handle all orders logic in the-done
 Add UI for adding a client ($.post)-done
 Add UI for adding store (featch)-done
 Add UI for adding an order (add the client id and the store id mannully for now in a text input
-we will learn how to do it progremtelcly later).-done
+we will learn how to do it progremtelcly later)-done
 
 Add UI for getting user by id ($.get)-done
-Add UI for getting user by name ($.get (?name=name))-done
+Add UI for getting user by name ($.get (?name=name))-done 
 Add UI for getting all users.-done
 
 Add UI for getting store by id (fetch)-done
@@ -40,7 +40,7 @@ With your teammate (in live share), add another route (lets call it helth-check)
 
 Bonus:
 Add an ajax request from the orders.html thats get all the stores and make a select tag from tham
-(Get all data, loop on it, and append it to an <select> as an option)
+(Get all data, loop on it, and append it to an <select> as an option)-done
 https://stackoverflow.com/a/171007/1928647-done
 
 Good luck

@@ -1,0 +1,87 @@
+* {
+    font-size: 15px;
+    font-family: cursive;
+    margin: 10px;
+    padding: 0;
+    box-sizing: border-box;
+    margin-top: 30px;
+}
+
+.wrap {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchName,
+.searchId,
+.searchAll {
+    width: 500px;
+    margin: 20px;
+    background-color: rgb(253, 244, 206);
+    display: flex;
+    text-align: center;
+}
+
+.allDetails {
+    width: 500px;
+    height: auto;
+    color: black;
+    text-align: center;
+    background-color: rgb(253, 244, 206);
+}
+
+.search .search-btn {
+    margin-top: -3px;
+    width: 90px;
+}
+
+
+.store-fileds {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: 500px;
+    background-color: rgb(253, 244, 206);
+}
+
+input {
+    width: 15vw;
+    text-align: center;
+    font-size: 15px;
+    border: 2px solid black;
+    color: black;
+    margin: 20px;
+    padding: 5px;
+}
+
+.insert-btn,
+.search-btn,
+.update-btn,
+.search-all-btn {
+    width: 10vw;
+    text-align: center;
+    background-color: blueviolet;
+    padding: 8px;
+    border-radius: 30px;
+}
+
+.update-btn {
+    margin-left: -10px;
+}
+
+.msg,
+.result {
+    color: red;
+    font-size: 15px;
+    text-align: center;
+    margin: 20px;
+    display: none;
+}
+
+.show {
+    display: block;
+}

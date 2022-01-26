@@ -8,19 +8,48 @@
     <title>Orders page</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/orders.css">
 </head>
 
 <body>
-    <h1>Orders</h1>
-    <select id="list">
+    <div class="wrap">
+        <div class="orders-fileds">
+            <h1>Add Order</h1>
+            <input type="text" placeholder="Client ID" data-role="client">
+            <input type="text" placeholder="Store ID" data-role="store">
+            <input type="button" value="Insert" data-role="insert-btn" class="insert-btn">
+        </div>
+        <div class="searchAll">
+            <label>Get all orders</label>
+            <input type="button" value="Search" data-role="search-all-btn" class="search-all-btn">
+        </div>
+        <div class="allDetails"></div>
+        <select id="list" class="list"></select>
+    </div>
 
-    </select>
     <script>
-        fetch('http://localhost:3000/insert-store', {
-            method: 'POST'
-        }).then(store => console.log(store)).catch(err => console.log(err))
-
         $(function () {
+            $('[data-role="insert-btn"]').click(function () {
+                let clientId = $('[data-role="client"]').val();
+                let storeId = $('[data-role="store"]').val();
+                let data = {
+                    clientId,
+                    storeId
+                }
+                fetch('http://localhost:4000/insert-order', {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                }).then(data => alert('Data was inserted successfully')).catch(e =>
+                    console.log(e))
+
+                resetFileds();
+            })
+            $('[data-role="search-all-btn"]').click(function () {
+                $.get('http://localhost:4000/find-order', (data) => {
+                    displayData(data)
+                })
+            })
+
             $.ajax({
                 url: '/find-store',
                 dataType: 'json',
@@ -34,6 +63,22 @@
                     })
                 }
             })
+
+            function resetFileds() {
+                $('[data-role="client"]').val(''),
+                    $('[data-role="store"]').val('');
+            }
+
+            function displayData(data) {
+                $('.allDetails').html('');
+                $.each(data, (i, value) => {
+                    $('.allDetails').append(`<div style='border-bottom:1px solid black'>
+                     <p>${`Id:${value._id}`}</p>
+                     <p>${`Client:${value.name}`}</p>
+                     <p>${`Store:${value.adress}`}</p>
+                 </div>`)
+                })
+            }
         })
     </script>
 </body>

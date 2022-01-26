@@ -1,6 +1,6 @@
 const express = require("express"),
     app = express(),
-    port = 3000;
+    port = 4000;
 
 let mongoose = require("mongoose"),
     Client = require('./models/client'),
@@ -43,25 +43,35 @@ app.post('/insert-client', (req, res) => {
         phone
     })
     client.save((err, client) => {
-        console.log(err ? error : client);
+        console.log(err ? err : client);
     })
     res.send('Insert one client')
 })
 app.post('/insert-store', (req, res) => {
+    let {
+        name,
+        adress,
+        phone
+    } = req.body
+
     let store = new Store({
-        name: 'zara',
-        adress: 'habanim 2,haifa',
-        phone: '0523776812'
+        name,
+        adress,
+        phone
     })
     store.save((err, store) => {
-        console.log(err ? error : store);
+        console.log(err ? err : store);
     })
     res.send('Insert one store')
 })
 app.post('/insert-order', (req, res) => {
+    let {
+        client,
+        store
+    } = req.body;
     let order = new Order({
-        client: "61efc2f9fefbcd4c5770ffe8",
-        store: "61efc3ff11cba7f33ae62071"
+        client,
+        store
     })
     order.save((err, order) => {
         console.log(err ? error : order);
@@ -120,7 +130,7 @@ app.put('/store/:id', (req, res) => {
 app.patch('/order/:id', (req, res) => {
     let orderId = req.params.id;
     Order.findOneAndUpdate({
-        id: orderId
+        _id: orderId
     }, {
         $set: {
             store: '61efc4f280d303777aee3a2e'
@@ -144,25 +154,25 @@ app.get('/client', (req, res) => {
 //find by id or name
 
 app.get('/client/:id', (req, res) => {
-    let id = req.params.id;
-    Client.findOne({
-        id: id
+    let clientId = req.params.id;
+    Client.find({
+        _id: clientId
     }, (err, client) => {
-        console.log(err ? error : res.json(client));
+        console.log(err ? err : res.json(client));
     })
 })
 
 app.get('/find-store-id/:id', (req, res) => {
     let id = req.params.id;
-    Store.findOne({
-        id
+    Store.find({
+        _id: id
     }, (err, store) => {
         console.log(err ? error : res.json(store));
     })
 })
 app.get('/find-store-name/:name', (req, res) => {
     let storeName = req.params.name;
-    Store.findOne({
+    Store.find({
         name: storeName
     }, (err, store) => {
         console.log(err ? error : res.json(store));

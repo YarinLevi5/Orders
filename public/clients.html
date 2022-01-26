@@ -8,28 +8,117 @@
     <title>Clients page</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/clients.css">
 </head>
 
 <body>
-    <h1>Client</h1>
+    <div class="wrap">
+        <div class="client-fileds">
+            <h1>Add client</h1>
+            <input type="text" placeholder="Name" data-role="name">
+            <input type="text" placeholder="Adress" data-role="adress">
+            <input type="text" placeholder="phone" data-role="phone">
+            <div class="vip">
+                <input type="radio" data-role="vip" name="radio-btn">
+                <label for="radio-btn" class="vip-label">VIP</label>
+            </div>
+            <input type="button" value="Insert" data-role="insert-btn" class="insert-btn">
+        </div>
+        <div class="searchName">
+            <label>Search by Name</label>
+            <input type="text" class="search" data-role="name-paramter">
+            <input type="button" value="Search" data-role="search-name-btn" class="search-btn">
+            <p class="result">No results</p>
+        </div>
+        <div class="searchId">
+            <label>Search by Id</label>
+            <input type="text" class="search" data-role="id-paramter">
+            <input type="button" value="Search" data-role="search-id-btn" class="search-btn">
+            <input type="button" value="Update" data-role="update-id-btn" class="update-btn">
+        </div>
+        <div class="searchAll">
+            <label>Get all clients</label>
+            <input type="button" value="Search" data-role="search-all-btn" class="search-all-btn">
+        </div>
+        <div class="allDetails"></div>
+    </div>
+
     <script>
         $(function () {
-            let obj = {
-                name: 'binki',
-                adress: 'eilat',
-                isVip: true,
-                phone: '051-23981271'
+
+            $('[data-role="insert-btn"]').click(function () {
+                let boolean = false;
+                if ($('[data-role="vip"]').is(":checked")) {
+                    boolean = true;
+                }
+                let obj = {
+                    name: $('[data-role="name"]').val(),
+                    adress: $('[data-role="adress"]').val(),
+                    isVip: boolean,
+                    phone: $('[data-role="phone"]').val()
+                }
+
+                $.post('http://localhost:4000/insert-client', obj, () => {
+                    alert('Data was inserted successfully');
+                })
+                resetFileds();
+            })
+
+            $('[data-role="search-name-btn"]').click(() => {
+                let name = $('[data-role="name-paramter"]').val();
+                $.get(`http://localhost:4000/client?name=${name}`, function (data) {
+                    displayData(data);
+                }).fail(err => {
+                    $('.result').addClass('show');
+                })
+                resetFileds();
+            })
+            $('[data-role="search-id-btn"]').click(() => {
+                let id = $('[data-role="id-paramter"]').val();
+                $.get("http://localhost:4000/client/" + id, function (data) {
+                    displayData(data);
+                }).fail(err => {
+                    $('.result').addClass('show');
+                })
+                resetFileds();
+            })
+            $('[data-role="update-id-btn"]').click(() => {
+                let id = $('[data-role="id-paramter"]').val();
+                $.ajax({
+                    url: "http://localhost:4000/client/" + id,
+                    data: data,
+                    type: 'PATCH'
+                });
+                resetFileds();
+            })
+            $('[data-role="search-all-btn"]').click(function () {
+                fetch('http://localhost:4000/find-client')
+                    .then(res => res.json())
+                    .then(data => displayData(data)).catch(e =>
+                        console.log(
+                            e))
+
+            })
+
+            function resetFileds() {
+                $('[data-role="name-paramter"]').val(''),
+                    $('[data-role="id-paramter"]').val(''),
+                    $('[data-role="name"]').val(''),
+                    $('[data-role="adress"]').val(''),
+                    $('.vip-label').prop('checked', false);
+                $('[data-role="phone"]').val('')
             }
-            $.post('http://localhost:3000/insert-client', obj, (err, data) => {
-                console.log(err ? err : data);
-            })
 
-            $.get('http://localhost:3000/client', function (data) {
-                console.log(data);
-            })
-
-            fetch('http://localhost:3000/find-client').then(data => console.log(data)).catch(e => console.log(
-                e))
+            function displayData(data) {
+                $('.allDetails').html('');
+                $.each(data, (i, value) => {
+                    $('.allDetails').append(`<div style='border-bottom:1px solid black'><p>${JSON.stringify(`Id:${value._id}`)}</p>
+                    <p>${JSON.stringify(`Name:${value.name}`)}</p>
+                    <p>${JSON.stringify(`Adress:${value.adress}`)}</p>
+                    <p>${JSON.stringify(`VIP: ${value.isVip}`)}</p>
+                    <p>${JSON.stringify(`Phone:${value.phone}`)}</p></div>`)
+                })
+            }
         })
     </script>
 </body>
