@@ -28,13 +28,12 @@
             <label>Search by Name</label>
             <input type="text" class="search" data-role="name-paramter">
             <input type="button" value="Search" data-role="search-name-btn" class="search-btn">
-            <p class="result">No results</p>
         </div>
         <div class="searchId">
             <label>Search by Id</label>
             <input type="text" class="search" data-role="id-paramter">
             <input type="button" value="Search" data-role="search-id-btn" class="search-btn">
-            <input type="button" value="Update" data-role="update-id-btn" class="update-btn">
+            <input type="button" value="Edit" data-role="edit-id-btn" class="edit-btn">
         </div>
         <div class="searchAll">
             <label>Get all clients</label>
@@ -68,29 +67,64 @@
                 let name = $('[data-role="name-paramter"]').val();
                 $.get(`http://localhost:4000/client?name=${name}`, function (data) {
                     displayData(data);
-                }).fail(err => {
-                    $('.result').addClass('show');
                 })
                 resetFileds();
             })
+
             $('[data-role="search-id-btn"]').click(() => {
                 let id = $('[data-role="id-paramter"]').val();
                 $.get("http://localhost:4000/client/" + id, function (data) {
                     displayData(data);
                 }).fail(err => {
-                    $('.result').addClass('show');
+                    $('.result').append('<p class="result">No results</p>');
                 })
                 resetFileds();
             })
-            $('[data-role="update-id-btn"]').click(() => {
+
+            $('[data-role="edit-id-btn"]').click(() => {
+
                 let id = $('[data-role="id-paramter"]').val();
-                $.ajax({
-                    url: "http://localhost:4000/client/" + id,
-                    data: data,
-                    type: 'PATCH'
-                });
+                $.get("http://localhost:4000/client/" + id, function (data) {
+
+                    $.each(data, (i, key) => {
+                        let name = (JSON.stringify(key.name));
+                        let adress = (JSON.stringify(key.adress));
+                        let phone = (JSON.stringify(key.phone));
+                        let vip = (JSON.stringify(key.isVip));
+
+                        $('[data-role="name"]').val(name);
+                        $('[data-role="adress"]').val(adress);
+                        $('[data-role="phone"]').val(phone);
+                        $('[data-role="vip"]').is(':checked');
+
+                    })
+
+                    let saveBtn = $('<button>').text('Save').attr('class', 'save-btn');
+                    $('.client-fileds').append(saveBtn);
+
+                    saveBtn.click(() => {
+                        let boolean = false;
+                        if ($('[data-role="vip"]').is(":checked")) {
+                            boolean = true;
+                        }
+                        let newData = {
+                            name: $('[data-role="name"]').val(),
+                            adress: $('[data-role="adress"]').val(),
+                            isVip: boolean,
+                            phone: $('[data-role="phone"]').val()
+                        }
+                        $.ajax({
+                            url: "http://localhost:4000/client/" + id,
+                            data: newData,
+                            type: 'PUT',
+                            success: console.log(newData)
+                        });
+                    })
+
+                })
                 resetFileds();
             })
+
             $('[data-role="search-all-btn"]').click(function () {
                 fetch('http://localhost:4000/find-client')
                     .then(res => res.json())
@@ -112,13 +146,17 @@
             function displayData(data) {
                 $('.allDetails').html('');
                 $.each(data, (i, value) => {
-                    $('.allDetails').append(`<div style='border-bottom:1px solid black'><p>${JSON.stringify(`Id:${value._id}`)}</p>
+                    $('.allDetails').append(`<div style='border-bottom:1px solid black'>
+                    <p>${JSON.stringify(`Id:${value._id}`)}</p>
                     <p>${JSON.stringify(`Name:${value.name}`)}</p>
                     <p>${JSON.stringify(`Adress:${value.adress}`)}</p>
                     <p>${JSON.stringify(`VIP: ${value.isVip}`)}</p>
-                    <p>${JSON.stringify(`Phone:${value.phone}`)}</p></div>`)
+                    <p>${JSON.stringify(`Phone:${value.phone}`)}</p>
+                    </div>`)
+
                 })
             }
+
         })
     </script>
 </body>

@@ -100,13 +100,23 @@ app.get('/find-order', (req, res) => {
 
 //update 
 
-app.patch('/client/:id', (req, res) => {
+app.put('/client/:id', (req, res) => {
     let clientId = req.params.id;
+    let {
+        name,
+        adress,
+        isVip,
+        phone
+    } = req.body
+
     Client.findOneAndUpdate({
-        id: clientId
+        _id: clientId
     }, {
         $set: {
-            name: 'yarin'
+            name,
+            adress,
+            isVip,
+            phone
         }
     }, (err, update) => {
         console.log(err ? err : res.json(update))
@@ -116,7 +126,7 @@ app.patch('/client/:id', (req, res) => {
 app.put('/store/:id', (req, res) => {
     let storeId = req.params.id;
     Store.findOneAndUpdate({
-        id: storeId
+        _id: storeId
     }, {
         $set: {
             name: 'Bershka',
@@ -127,7 +137,7 @@ app.put('/store/:id', (req, res) => {
     })
 })
 
-app.patch('/order/:id', (req, res) => {
+app.put('/order/:id', (req, res) => {
     let orderId = req.params.id;
     Order.findOneAndUpdate({
         _id: orderId

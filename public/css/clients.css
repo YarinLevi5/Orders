@@ -1,5 +1,4 @@
 * {
-    font-size: 15px;
     font-family: cursive;
     margin: 10px;
     padding: 0;
@@ -17,6 +16,7 @@
 .searchName,
 .searchId,
 .searchAll {
+    font-size: 15px;
     width: 500px;
     margin: 20px;
     background-color: rgb(253, 244, 206);
@@ -25,7 +25,7 @@
 }
 
 .allDetails {
-    width: 300px;
+    width: 500px;
     height: auto;
     color: black;
     text-align: center;
@@ -48,6 +48,10 @@
     background-color: rgb(253, 244, 206);
 }
 
+.edit-fileds {
+    display: none;
+}
+
 input,
 .search input {
     width: 15vw;
@@ -57,6 +61,7 @@ input,
     color: black;
     margin: 20px;
     padding: 5px;
+    font-size: 15px;
 }
 
 .vip {
@@ -71,16 +76,19 @@ input,
 
 .insert-btn,
 .search-btn,
-.update-btn,
+.edit-btn,
+.save-btn,
 .search-all-btn {
     width: 10vw;
     text-align: center;
     background-color: blueviolet;
     padding: 8px;
+    border: 2px solid black;
     border-radius: 30px;
+    font-size: 15px;
 }
 
-.update-btn {
+.edit-btn {
     margin-left: -10px;
 }
 
