@@ -1,5 +1,4 @@
 * {
-    font-size: 15px;
     font-family: cursive;
     margin: 10px;
     padding: 0;
@@ -22,6 +21,7 @@
     background-color: rgb(253, 244, 206);
     display: flex;
     text-align: center;
+    font-size: 15px;
 }
 
 .allDetails {
