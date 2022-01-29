@@ -12,7 +12,7 @@
               },
               body: JSON.stringify(obj),
           }).then(data => {
-              $('.msg').toggleClass('show')
+              $('.msg').addClass('show')
               resetFileds()
           }).catch(err => console.log(
               err))

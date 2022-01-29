@@ -21,6 +21,15 @@ let findAllOrders = () => {
 
 }
 
+let findOrderById = (orderId) => {
+    return new Promise((resolve, reject) => {
+        Order.find({
+                _id: orderId
+            }).then(data => resolve(data))
+            .catch(e => reject(e))
+    })
+}
+
 let updateOrderById = (orderId, client, store) => {
     return new Promise((resolve, reject) => {
         Order.findOneAndUpdate({
@@ -39,5 +48,6 @@ let updateOrderById = (orderId, client, store) => {
 module.exports = {
     insertOrder,
     findAllOrders,
+    findOrderById,
     updateOrderById
 }

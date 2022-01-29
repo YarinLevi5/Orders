@@ -13,7 +13,8 @@
     align-items: center;
 }
 
-.searchAll {
+.searchAll,
+.searchId {
     width: 500px;
     margin: 20px;
     background-color: rgb(253, 244, 206);
@@ -89,7 +90,10 @@ input,
     text-align: center;
     margin: 20px;
     display: none;
+}
 
+.show {
+    display: block;
 }
 
 .information {

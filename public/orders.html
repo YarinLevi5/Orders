@@ -15,10 +15,15 @@
     <div class="wrap">
         <div class="orders-fileds">
             <h1>Add Order</h1>
-            <input type="text" placeholder="Client ID" data-role="client">
-            <input type="text" placeholder="Store ID" data-role="store">
+            <select id='clientList'></select>
+            <select id='storeList'></select>
             <input type="button" value="Insert" data-role="insert-btn" class="insert-btn">
             <div class="msg">Data was inserted sucssesfully</div>
+        </div>
+        <div class="searchId">
+            <label>Update order by Id</label>
+            <input type="text" class="search" data-role="id-paramter">
+            <input type="button" value="Edit" data-role="editBtn" class="edit-btn">
         </div>
         <div class="searchAll">
             <label>Get all orders</label>

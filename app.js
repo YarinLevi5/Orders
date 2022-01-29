@@ -22,6 +22,7 @@ let {
 let {
     insertOrder,
     findAllOrders,
+    findOrderById,
     updateOrderById
 } = require('./controllers/ordersController');
 
@@ -136,6 +137,12 @@ app.get('/find-order', (req, res) => {
     findAllOrders()
         .then(data => res.json(data))
         .catch(err => console.log(err));
+})
+
+app.get('/order/:id', (req, res) => {
+    findOrderById(req.params.id)
+        .then(data => res.json(data))
+        .catch(err => console.log(err))
 })
 
 app.put('/order/:id', (req, res) => {
