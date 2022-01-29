@@ -104,3 +104,7 @@ input,
 .show {
     display: block;
 }
+
+.information {
+    border-bottom: 1px solid black;
+}

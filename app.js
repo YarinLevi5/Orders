@@ -99,6 +99,10 @@ app.get('/find-store', (req, res) => {
 })
 
 app.put('/store/:id', (req, res) => {
+    let {
+        name,
+        adress
+    } = req.body
     updateStore(req.params.id, name, adress)
         .then(data => res.json(data))
         .catch(err => console.log(err))
@@ -135,6 +139,10 @@ app.get('/find-order', (req, res) => {
 })
 
 app.put('/order/:id', (req, res) => {
+    let {
+        client,
+        store
+    } = req.body;
     updateOrderById(req.params.id, client, store)
         .then(data => res.json(data))
         .catch(err => console.log(err))
