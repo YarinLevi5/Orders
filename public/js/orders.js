@@ -5,7 +5,7 @@
           dataType: 'json',
           success: function (selectValues) {
               $.each(selectValues, function (i, value) {
-                  $('#clientList').append($("<option></option>").attr("value", i).text(value._id));
+                  $('#clientList').append($("<option></option>").attr("value", value._id).text(value.name));
               })
           }
       })
@@ -14,14 +14,14 @@
           dataType: 'json',
           success: function (selectValues) {
               $.each(selectValues, function (i, value) {
-                  $('#storeList').append($("<option></option>").attr("value", i).text(value._id));
+                  $('#storeList').append($("<option></option>").attr("value", value._id).text(value.name));
               })
           }
       })
 
       $('[data-role="insert-btn"]').click(function () {
-          let client = $('#clientList').find(":selected").text();
-          let store = $('#storeList').find(":selected").text();
+          let client = $('#clientList').find(":selected").val();
+          let store = $('#storeList').find(":selected").val();
           let data = {
               client,
               store
@@ -41,8 +41,8 @@
           let id = $('[data-role="id-paramter"]').val();
           $.get('/order/' + id, (data) => {
               $.each(data, (i, val) => {
-                  $('#clientList').find(":selected").text(val.client);
-                  $('#storeList').find(":selected").text(val.store);
+                  $('#clientList').find(":selected").val(val.client);
+                  $('#storeList').find(":selected").val(val.store);
               })
 
               let saveBtn = $('<input:button>').text('Save').attr('class', 'save-btn');
@@ -51,8 +51,8 @@
               $('.save-btn').click(function () {
 
                   let newFileds = {
-                      client: $('#clientList').find(":selected").text(),
-                      store: $('#storeList').find(":selected").text()
+                      client: $('#clientList').find(":selected").val(),
+                      store: $('#storeList').find(":selected").val()
                   }
                   $.ajax({
                       url: "http://localhost:4000/order/" + id,
