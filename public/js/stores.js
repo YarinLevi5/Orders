@@ -91,7 +91,7 @@
       function displayData(data) {
           $('.allDetails').html('');
           $.each(data, (i, value) => {
-              $('.allDetails').append(`<div class=information'>
+              $('.allDetails').append(`<div class='information'>
             <p>${`Id:  ${value._id}`}</p>
             <p>${`Name:  ${value.name}`}</p>
              <p>${`Adress:  ${value.adress}`}</p>
